@@ -6,6 +6,7 @@ import java.util.Scanner;
 public class FirstJavaCode {
     public static void main(String[] args) {
 
+
         boolean isPlaying = false;
         int playerLife = 5;
 
@@ -13,12 +14,14 @@ public class FirstJavaCode {
         Random random = new Random();
         int randomNumber = random.nextInt(20)+1;
 
+        //user input
         System.out.println("Welcome To my brand new game");
         System.out.print("Please Enter your beautifully crafted Name : ");
         String userName = userInput.next();
         System.out.println("Hello Mr./Mrs. " + userName);
         System.out.println();
 
+        //play confirmation
         System.out.println("Please Confirm your Entry");
         System.out.println("1. Play");
         System.out.println("2. Be a coward");
