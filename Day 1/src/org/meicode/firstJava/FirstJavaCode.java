@@ -3,6 +3,7 @@ package org.meicode.firstJava;
 import java.util.Random;
 import java.util.Scanner;
 
+// a simple java code to let userguess a number and then match it with the system's number
 public class FirstJavaCode {
     public static void main(String[] args) {
 
