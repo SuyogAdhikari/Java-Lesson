@@ -1,2 +1,2 @@
-# Java-Lesson-Day-1
+# Java-Lesson
 as the name says
