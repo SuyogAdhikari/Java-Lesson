@@ -12,9 +12,11 @@ public class Message {
     }
 
     public void getDetails(){
+        System.out.println("\n************************************************\n");
         System.out.println("Contact Name : " + this.recipient
                            + "\n Message : " + this.text
                            + "\n ID : " + this.id);
+        System.out.println("\n************************************************\n");
     }
 
     public String getText() {

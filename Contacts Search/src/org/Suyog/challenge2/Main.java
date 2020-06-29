@@ -29,12 +29,12 @@ public class Main {
 
     public static void main(String[] args) {
         contacts = new ArrayList<>();
-        System.out.println("Welcome to some weird static contacts application");
+        System.out.println("\nWelcome to some weird static contacts application\n");
         showInitialOptions();
     }
 
     private static void showInitialOptions() {
-        System.out.println("Please select your preferred options :"
+        System.out.println("\n\nPlease select your preferred options :"
                 + "\n\t 1. Manage Contacts"
                 + "\n\t 2. Messages"
                 + "\n\t 3. Quit");
@@ -48,17 +48,19 @@ public class Main {
                 break;
 
             case 2:
-//                manageMessages();
+                //manageMessages();
+                System.out.println("Manage Message here");
                 break;
 
             default:
+                System.exit(0);
                 break;
 
         }
     }
 
     private static void manageContacts() {
-        System.out.println("Please Select you preferred desire :\n" +
+        System.out.println("\n\nPlease Select you preferred desire :\n" +
                 "\t1. Show all Contacts\n" +
                 "\t2. Add a new Contact\n" +
                 "\t3. Search for existing contact\n" +
@@ -81,7 +83,7 @@ public class Main {
                 break;
 
             case 4:
-//                deleteContact();
+                deleteContact();
                 break;
 
             default:
@@ -142,7 +144,7 @@ public class Main {
             boolean doesExist = false;
             for (Contacts c : contacts)
             {
-                if (c.getName().equals(name))
+                if (c.getName().toLowerCase().equals(name.toLowerCase()))
                 {
                     doesExist = true;
                     System.out.println("Contact Information ");
@@ -152,13 +154,51 @@ public class Main {
 
             if(!doesExist)
             {
-                System.out.println("No contact of name " + name.toUpperCase() + "Found");
+                System.out.println("No contact of name " + name.toUpperCase() + " found");
                 searchForContact();
             }
         }
         showInitialOptions();
     }
 
+    public static void deleteContact()
+    {
+        boolean doesExist = false;
+        System.out.println("Delete a Contact : ");
+        System.out.println("--------------------------");
 
+        System.out.println("Please enter contact name to be deleted " );
+        String name = scanner.next();
+
+        if(name == "")
+        {
+            System.out.println("Please Enter a valid Name : ");
+            deleteContact();
+        }
+
+        for(Contacts c: contacts)
+        {
+            if(c.getName().toLowerCase().equals(name.toLowerCase()))
+            {
+                doesExist = true;
+                System.out.println("Deleting the following Contact information :");
+//                System.out.println("Contact Name  :" + c.getName() +
+//                                   "\nContact Number : " + c.getNumber() +
+//                                   "\n Contact Email : " + c.getEmail());
+
+                c.getDetails();
+                System.out.println("------------------------------------------------");
+                contacts.remove(c);
+
+                System.out.println("Contact " + name.toUpperCase() + " has been removed");
+                break;
+            }
+            if(!doesExist)
+            {
+                System.out.println("No contact of name " + name.toUpperCase() + " found");
+                deleteContact();
+            }
+        }
+    }
 }
 
