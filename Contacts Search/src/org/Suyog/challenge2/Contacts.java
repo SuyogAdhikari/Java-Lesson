@@ -32,7 +32,7 @@ public class Contacts {
         System.out.println("Name : " + this.name +
                            "\nNumber : " + this.number +
                            "\nEmail : " + this.email );
-        System.out.println("*****************************************\n");
+        System.out.println("*****************************************\n\n");
     }
 
 

@@ -24,8 +24,10 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
+
     private static ArrayList<Contacts> contacts;
     private static Scanner scanner;
+    private static int id = 0;
 
     public static void main(String[] args) {
         contacts = new ArrayList<>();
@@ -48,8 +50,7 @@ public class Main {
                 break;
 
             case 2:
-                //manageMessages();
-                System.out.println("Manage Message here");
+                manageMessages();
                 break;
 
             default:
@@ -67,9 +68,9 @@ public class Main {
                 "\t4. Delete a contact\n" +
                 "\t5. Go back to the previous menu\n"
         );
-        int choice = scanner.nextInt();
+        int _choice = scanner.nextInt();
 
-        switch (choice) {
+        switch (_choice) {
             case 1:
                 showAllContacts();
                 break;
@@ -92,10 +93,19 @@ public class Main {
         }
     }
 
-    public static void showAllContacts(){
-        System.out.println("List of all Contacts are : ");
-        for(Contacts c: contacts){
-            c.getDetails();
+
+    //Contacts Manager Section here..... all the function for contacts are written here
+    public static void showAllContacts()
+    {
+
+        if(contacts.size()>0)
+        {
+            System.out.println("Need to have some people here right ??? ");
+        }else{
+            System.out.println("List of all Contacts are : ");
+            for (Contacts _c : contacts) {
+                _c.getDetails();
+            }
         }
         showInitialOptions();
     }
@@ -105,23 +115,50 @@ public class Main {
     {
         System.out.println("Adding a new contact : " +
                             "\nPlease Enter a Name : ");
-        String name = scanner.next();
+        String _name = scanner.next();
 
         System.out.println("Please Enter Phone Number : ");
-        String number = scanner.next();
+        String _number = scanner.next();
 
         System.out.println("Please Enter Email : ");
-        String email = scanner.next();
+        String _email = scanner.next();
 
-        if(name == ""|| number == "" || email == "")
+        if(_name == ""|| _number == "" || _email == "")
         {
             System.out.println("Invalid Input given please try again ");
             addNewContact();
         }else{
-            Contacts contact = new Contacts(name, number, email);
-            contacts.add(contact);
+            boolean _doesExist = false ;
+            int _index = 0 ;
 
-            System.out.println("Contact added successfully...");
+            for(Contacts _c: contacts)
+            {
+                if(_c.getName().toLowerCase().equals(_name.toLowerCase()) && _c.getNumber().equals(_number) && _c.getEmail().toLowerCase().equals(_email.toLowerCase())) {
+                    _doesExist = true;
+                    _index = contacts.indexOf(_c);
+                }
+            }
+
+            if(_doesExist)
+            {
+                System.out.println("Give Contact already exist : ");
+                for (Contacts _c : contacts)
+                {
+                    if (_c.getName().toLowerCase().equals(_name.toLowerCase()))
+                    {
+                        System.out.println("Contact Information ");
+                        _c.getDetails();
+                    }
+                    showInitialOptions();
+                }
+            }
+
+            if(!_doesExist) {
+                Contacts contact = new Contacts(_name, _number, _email);
+                contacts.add(contact);
+
+                System.out.println("Contact" + _name.toUpperCase() + "added successfully...");
+            }
         }
         showInitialOptions();
     }
@@ -142,13 +179,13 @@ public class Main {
         }else
         {
             boolean doesExist = false;
-            for (Contacts c : contacts)
+            for (Contacts _c : contacts)
             {
-                if (c.getName().toLowerCase().equals(name.toLowerCase()))
+                if (_c.getName().toLowerCase().equals(name.toLowerCase()))
                 {
                     doesExist = true;
                     System.out.println("Contact Information ");
-                    c.getDetails();
+                    _c.getDetails();
                 }
             }
 
@@ -163,7 +200,6 @@ public class Main {
 
     public static void deleteContact()
     {
-        boolean doesExist = false;
         System.out.println("Delete a Contact : ");
         System.out.println("--------------------------");
 
@@ -174,31 +210,128 @@ public class Main {
         {
             System.out.println("Please Enter a valid Name : ");
             deleteContact();
-        }
-
-        for(Contacts c: contacts)
-        {
-            if(c.getName().toLowerCase().equals(name.toLowerCase()))
-            {
-                doesExist = true;
-                System.out.println("Deleting the following Contact information :");
-//                System.out.println("Contact Name  :" + c.getName() +
-//                                   "\nContact Number : " + c.getNumber() +
-//                                   "\n Contact Email : " + c.getEmail());
-
-                c.getDetails();
-                System.out.println("------------------------------------------------");
-                contacts.remove(c);
-
-                System.out.println("Contact " + name.toUpperCase() + " has been removed");
-                break;
+        }else{
+            boolean _doesExist = false;
+            int _index = 0;
+            for (Contacts _c : contacts) {
+                if (_c.getName().toLowerCase().equals(name.toLowerCase())) {
+                    _doesExist = true;
+                    System.out.println("Deleting the following Contact information :");
+                    _c.getDetails();
+                    System.out.println("------------------------------------------------");
+                    _index = contacts.indexOf(_c);
+                }
             }
-            if(!doesExist)
-            {
+
+            if(_doesExist){
+                contacts.remove(_index);
+                System.out.println("Contact " + name.toUpperCase() + " has been removed");
+                manageContacts();
+            }
+
+            if(!_doesExist) {
                 System.out.println("No contact of name " + name.toUpperCase() + " found");
                 deleteContact();
             }
         }
+    }
+
+
+    //Messages Management Section Here... all functions for message are written below :
+
+    public static void manageMessages(){
+        System.out.println("\n\nPlease Select you preferred desire :\n" +
+                           "\t1. Show all Messages\n" +
+                           "\t2. Send a new Message\n" +
+                           "\t3. Back\n");
+        int _choice = scanner.nextInt();
+
+        switch(_choice)
+        {
+            case 1:
+                seeAllMessages();
+                break;
+
+            case 2:
+                sendNewMessage();
+                break;
+
+            case 3 :
+                showInitialOptions();
+                break;
+
+            default:
+                System.out.println("Invalid Input Given try again : ");
+                manageMessages();
+        }
+    }
+
+    public static void seeAllMessages()
+    {
+        ArrayList<Message> _allMessages = new ArrayList<>();
+        for(Contacts c: contacts)
+        {
+            _allMessages.addAll(c.getMessage());
+        }
+
+        if(_allMessages.size() > 0)
+        {
+            for(Message m: _allMessages)
+            {
+                m.getDetails();
+                showInitialOptions();
+            }
+        }else{
+            System.out.println("Message box is empty you isolated lonely boiii ");
+            showInitialOptions();
+        }
+    }
+
+    public static void sendNewMessage()
+    {
+        System.out.println("\n\nCreate a New Message : ");
+        System.out.println("Please Enter Receiver's Name : ");
+        String _name = scanner.next();
+
+        if(_name.equals(""))
+        {
+            System.out.println("Cannot send message to Voldemort... please enter another number ");
+        }else{
+            boolean _doesExist = false;
+            for(Contacts c: contacts)
+            {
+                if(c.getName().toLowerCase().equals(_name.toLowerCase())){
+                    _doesExist = true;
+                }
+            }
+            if(_doesExist){
+                System.out.println("Enter you dope message to the receiver : ");
+                String _message = scanner.next();
+
+                if(_message.equals(""))
+                {
+                    System.out.println("No messages written here boii... type something :/ ");
+                    sendNewMessage();
+                }else{
+                    id++;
+                    Message message = new Message(_message, _name, id);
+                    for(Contacts c: contacts)
+                    {
+                        if(c.getName().toLowerCase().equals(_name.toLowerCase()))
+                        {
+                            ArrayList<Message> messages = c.getMessage();
+                            messages.add(message);
+                            c.setMessage(messages);
+                        }
+                    }
+                    System.out.println("----------- * Message Sent *-----------");
+                }
+            }else{
+                System.out.println("No such Contacts found : Add a new contact or recheck your contact data : ");
+                manageMessages();
+            }
+        }
+        showInitialOptions();
     }
 }
 
